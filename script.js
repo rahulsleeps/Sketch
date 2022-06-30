@@ -1,10 +1,22 @@
-const gridSize = document.querySelector(".Size"); // This is the size selector
+const sizeButton = document.querySelector(".Size"); // This is the size selector
 const grid = document.querySelector(".grid"); // the actual grid
-let boxes = 0;
+let gridSize = 32;
+let cellsArray = [];
 
 
-// function for changing number for boxes
+// function for changing number for boxes, updating size button content and changing cellsArray value
 function gridBoxes(boxGrid){
+
+    if(boxGrid === null || boxGrid === undefined || boxGrid === 0){
+        return;
+    }
+
+    if(boxGrid > 64){
+        alert("Max grid size: 64");
+        return;
+    }
+
+    gridSize = boxGrid;
 
     while(grid.hasChildNodes()){
 
@@ -21,9 +33,18 @@ function gridBoxes(boxGrid){
         
         grid.appendChild(box);
     }
+
+    sizeButton.textContent = `Size : ${gridSize} X ${gridSize}`;
+    cellsArray = document.querySelectorAll('.box');
+    cellsArray.forEach(cell => cell.addEventListener('mouseover', colorFill))
 }
 
 gridBoxes(32);
 
-gridSize.addEventListener('click', () => {boxes = prompt("Enter the grid size")})
-gridSize.addEventListener('click', () => {gridBoxes(boxes)});
+sizeButton.addEventListener('click', () => {gridSize = prompt("Enter the grid size")})
+sizeButton.addEventListener('click', () => {gridBoxes(gridSize)});
+
+function colorFill(e){
+    
+  e.target.style.backgroundColor = `${document.querySelector('.color input').value}`;
+}
