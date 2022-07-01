@@ -1,10 +1,14 @@
 const sizeButton = document.querySelector(".Size"); // This is the size selector
+const eraserButton = document.querySelector(".Eraser");
+const clearButton = document.querySelector(".Clear");
+const colorButton = document.querySelector(".color");
+const coloPicker = document.querySelector(".color input");
+
 const grid = document.querySelector(".grid"); // the actual grid
 let gridSize = 32;
-let cellsArray = [];
 
 
-// function for changing number for boxes, updating size button content and changing cellsArray value
+// function for changing number for boxes, updating size button content
 function gridBoxes(boxGrid){
 
     if(boxGrid === null || boxGrid === undefined || boxGrid === 0){
@@ -35,8 +39,7 @@ function gridBoxes(boxGrid){
     }
 
     sizeButton.textContent = `Size : ${gridSize} X ${gridSize}`;
-    cellsArray = document.querySelectorAll('.box');
-    cellsArray.forEach(cell => cell.addEventListener('mouseover', colorFill))
+    cellColor(coloPicker.value);
 }
 
 gridBoxes(32);
@@ -44,7 +47,20 @@ gridBoxes(32);
 sizeButton.addEventListener('click', () => {gridSize = prompt("Enter the grid size")})
 sizeButton.addEventListener('click', () => {gridBoxes(gridSize)});
 
-function colorFill(e){
-    
-  e.target.style.backgroundColor = `${document.querySelector('.color input').value}`;
+function cellColor(color){
+    const cellsArray = document.querySelectorAll('.box');
+    cellsArray.forEach(cell => cell.addEventListener('mouseover', (e) => {e.target.style.backgroundColor = `${color}`}))
 }
+
+coloPicker.addEventListener('change', () => {cellColor(coloPicker.value)});
+eraserButton.addEventListener('click', () => {cellColor('#ffffff')});
+
+clearButton.addEventListener('click', () => {
+    const cellsArray = document.querySelectorAll('.box');
+    cellsArray.forEach(cell => cell.style.backgroundColor = '#ffffff')
+});
+
+window.onload = () => {
+    coloPicker.value = '#000000';
+    cellColor(coloPicker.value);
+};
